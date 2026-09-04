@@ -2,9 +2,9 @@
   <el-row :gutter="20" class="env-row">
     <el-col v-for="m in metrics" :key="m.key" :xs="12" :sm="12" :md="6">
       <div class="env-card" :class="`is-${m.level}`">
-        <div class="env-icon"><el-icon :size="26"><component :is="m.icon" /></el-icon></div>
+        <div class="env-icon"><el-icon :size="24"><component :is="m.icon" /></el-icon></div>
         <div class="env-main">
-          <div class="env-value">
+          <div class="env-value display-num">
             {{ m.value }}<span class="unit">{{ m.unit }}</span>
           </div>
           <div class="env-label">{{ m.label }}<span v-if="m.extra" class="extra"> · {{ m.extra }}</span></div>
@@ -57,39 +57,50 @@ onBeforeUnmount(() => clearInterval(timer))
   align-items: center;
   gap: 14px;
   background: #fff;
-  border: 1px solid #e2ece6;
-  border-left: 5px solid #52b788;
-  border-radius: 12px;
+  border: 1px solid #e6dfd1;
+  border-top: 5px solid #3e9a66; /* 上色条，语义色随等级 */
+  border-radius: 16px;
   padding: 18px 20px;
-  box-shadow: 0 2px 8px rgba(45, 106, 79, 0.06);
+  box-shadow: 0 2px 10px rgba(58, 46, 24, 0.05);
   height: 100%;
 }
 .env-card.is-warning {
-  border-left-color: #e9a23b;
+  border-top-color: #d89b2b;
 }
 .env-card.is-danger {
-  border-left-color: #e4572e;
+  border-top-color: #c8563a;
+}
+.env-card.is-primary {
+  border-top-color: #2b6349;
 }
 .env-icon {
-  color: #2d6a4f;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: #f0f2e6;
+  color: #2b6349;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .env-value {
   font-size: 24px;
   font-weight: 800;
-  color: #22352b;
+  color: #26463a;
   line-height: 1.2;
 }
 .env-value .unit {
-  font-size: 14px;
-  color: #7a8a83;
+  font-size: 13px;
+  color: #5f7368;
   font-weight: 400;
 }
 .env-label {
-  margin-top: 4px;
-  color: #7a8a83;
+  margin-top: 2px;
+  color: #5f7368;
   font-size: 14px;
 }
 .extra {
-  color: #52b788;
+  color: #3e9a66;
 }
 </style>

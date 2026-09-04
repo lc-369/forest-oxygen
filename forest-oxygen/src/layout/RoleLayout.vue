@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f4f7f5;
+  background: #f7f2ea; /* 米白页面底色 */
 }
 /* 顶部栏 */
 .topbar {
@@ -127,9 +127,13 @@ onBeforeUnmount(() => {
   gap: 16px;
   padding: 0 24px;
   height: 68px;
-  background: linear-gradient(90deg, #1f4636 0%, #2d6a4f 55%, #3f8a68 100%);
+  /* 墨绿主渐变 + 右上金色柔光点缀 */
+  background:
+    radial-gradient(880px 160px at 84% -40px, rgba(201, 162, 75, 0.38), transparent 62%),
+    linear-gradient(92deg, #183a2b 0%, #24513d 50%, #35644b 100%);
   color: #fff;
-  box-shadow: 0 2px 10px rgba(31, 70, 54, 0.25);
+  box-shadow: 0 2px 12px rgba(24, 40, 30, 0.28);
+  border-bottom: 1px solid rgba(201, 162, 75, 0.35);
   z-index: 5;
 }
 .topbar-left,
@@ -139,7 +143,17 @@ onBeforeUnmount(() => {
   gap: 14px;
 }
 .brand-logo {
-  font-size: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(233, 205, 140, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.18);
+  border-radius: 14px;
 }
 .brand-name {
   font-size: 22px;
@@ -169,7 +183,7 @@ onBeforeUnmount(() => {
 /* 地图区 */
 .map-area {
   background: #fff;
-  border-bottom: 1px solid #e2ece6;
+  border-bottom: 1px solid #e9e2d5;
   padding: 14px 24px;
   text-align: center;
 }
@@ -181,7 +195,7 @@ onBeforeUnmount(() => {
 }
 .map-tip {
   margin-top: 8px;
-  color: #7a8a83;
+  color: #5f7368;
   font-size: 14px;
 }
 .fold-enter-active,
@@ -195,12 +209,16 @@ onBeforeUnmount(() => {
 }
 /* 导航 */
 .role-nav {
-  background: #fff;
-  border-bottom: 1px solid #e2ece6;
+  background: #fbf8f1;
+  border-bottom: 1px solid #e9e2d5;
   padding: 0 24px;
 }
 .role-nav :deep(.el-menu--horizontal) {
   border-bottom: none;
+}
+.role-nav :deep(.el-menu) {
+  background: transparent;
+  --el-menu-hover-bg-color: #efe8da;
 }
 .role-nav :deep(.el-menu-item) {
   font-size: 17px;
@@ -221,10 +239,10 @@ onBeforeUnmount(() => {
 }
 .layout-footer {
   text-align: center;
-  color: #93a69d;
+  color: #8a7f6a;
   font-size: 13px;
   padding: 8px 0;
-  background: #eef4f0;
+  background: #efe8db;
 }
 @media (max-width: 1280px) {
   .brand-name {

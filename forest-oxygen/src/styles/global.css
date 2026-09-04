@@ -1,17 +1,52 @@
-/* ===== 森林氧吧 · 全局样式 / 适老化设计 ===== */
+/* ===== 森林氧吧 · 全局样式 / 适老化设计 =====
+   配色体系：米白背景 + 墨绿(ink-green)主色 + 金色点缀的高端康养风。
+   文字用色守住适老化：正文对比度 >= 4.5:1；关键操作尺寸 >= 40px。 */
 :root {
-  /* 森林绿主题色（Element Plus 主色覆盖） */
-  --el-color-primary: #2d6a4f;
-  --el-color-primary-light-3: #57a07f;
-  --el-color-primary-light-5: #7fb89e;
-  --el-color-primary-light-7: #b2d5c4;
-  --el-color-primary-light-8: #cce3d8;
-  --el-color-primary-light-9: #e8f5ee;
-  --el-color-primary-dark-2: #24523c;
-  --el-color-success: #52b788;
-  --el-color-warning: #e9a23b;
-  --el-color-danger: #e4572e;
-  --el-border-radius-base: 8px;
+  /* ---- 墨绿主题色（Element Plus 主色覆盖，色阶补全，hover/禁用才一致） ---- */
+  --el-color-primary: #2b6349;
+  --el-color-primary-light-1: #40735b;
+  --el-color-primary-light-2: #55826d;
+  --el-color-primary-light-3: #6b9280;
+  --el-color-primary-light-4: #80a192;
+  --el-color-primary-light-5: #95b1a4;
+  --el-color-primary-light-6: #aac1b6;
+  --el-color-primary-light-7: #bfd0c8;
+  --el-color-primary-light-8: #d5e0db;
+  --el-color-primary-light-9: #eaefed;
+  --el-color-primary-dark-1: #295f46;
+  --el-color-primary-dark-2: #24523d;
+
+  --el-color-success: #3e9a66;
+  --el-color-success-light-8: #d8ebe0;
+  --el-color-success-light-9: #ecf5f0;
+  --el-color-warning: #d89b2b;
+  --el-color-warning-light-8: #f7ebd5;
+  --el-color-warning-light-9: #fbf5ea;
+  --el-color-danger: #c8563a;
+  --el-color-danger-light-8: #f4ddd8;
+  --el-color-danger-light-9: #faeeeb;
+  --el-color-error: #c8563a;
+
+  /* ---- 圆角 / 卡片描边（暖调） ---- */
+  --el-border-radius-base: 10px;
+  --el-border-radius-small: 8px;
+  --el-border-radius-round: 40px;
+  --el-card-border-radius: 16px;
+  --el-card-border-color: #e6dfd1;
+
+  /* ---- 文字（次要色加深以保证米白底上 >= 4.5:1） ---- */
+  --el-text-color-primary: #2e3b33;
+  --el-text-color-regular: #33453c;
+  --el-text-color-secondary: #5f7368;
+  --el-text-color-placeholder: #8a9890;
+
+  --el-fill-color-light: #faf6ec;
+  --el-border-color-lighter: #e9e2d5;
+
+  /* ---- 品牌点缀色（仅装饰，不做唯一信息载体） ---- */
+  --brand-gold: #c9a24b;
+  --brand-gold-deep: #a9832f;
+  --brand-ink: #1f4636;
 }
 
 * {
@@ -24,23 +59,26 @@ html,
 body {
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
   font-size: 16px; /* 适老化：基准字号 >= 16px */
-  color: #33413b;
-  background: #f4f7f5;
+  color: #2e3b33;
+  background: #f7f2ea; /* 米白页面底色 */
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 关键按钮最小点击尺寸 >= 40px */
+/* 关键按钮：适老化最小点击尺寸 >= 40px + 醒目字重 */
 .el-button {
   font-size: 16px;
   min-height: 40px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
-/* 全局滚动条 */
+/* 全局滚动条（暖墨色） */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #b2d5c4;
+  background: #b7b29f;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-track {
@@ -51,13 +89,36 @@ body {
 .page-title {
   font-size: 22px;
   font-weight: 700;
-  color: #2d6a4f;
+  color: #1f4636;
+  letter-spacing: 0.5px;
   margin-bottom: 16px;
 }
 .text-secondary {
-  color: #7a8a83;
+  color: #5f7368;
   font-size: 15px;
 }
+.text-secondary {
+  line-height: 1.7;
+}
+
+/* 数字对齐辅助（表格/图表数字等宽读数） */
+.display-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 标题 + 右侧操作的弹性行 */
+.page-head-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.page-head-inline .page-title {
+  margin-bottom: 0;
+}
+
 /* 高对比度色差文字辅助类 */
 .info-grid {
   display: grid;
@@ -68,18 +129,18 @@ body {
   display: flex;
   gap: 8px;
   padding: 14px 16px;
-  background: #f7faf8;
-  border: 1px solid #e2ece6;
-  border-radius: 10px;
+  background: #faf7ef;
+  border: 1px solid #e7e0d2;
+  border-radius: 12px;
   font-size: 16px;
   line-height: 1.6;
 }
 .info-item .k {
-  color: #7a8a83;
+  color: #5f7368;
   white-space: nowrap;
 }
 .info-item .v {
-  color: #22352b;
+  color: #26463a;
   font-weight: 600;
 }
 
@@ -112,9 +173,9 @@ body {
 }
 
 /* ========== Element Plus 视觉优化 ========== */
-/* 表格表头：森林绿底 + 加深文字 */
+/* 表格表头：暖米底 + 加深墨字 */
 .el-table th.el-table__cell {
-  background: #eef6f1 !important;
+  background: #eef0e4 !important;
   color: #1f4636;
 }
 .el-table th.el-table__cell .cell {
@@ -123,12 +184,17 @@ body {
 }
 .el-table td.el-table__cell {
   font-size: 16px;
+  color: #33453c;
 }
-/* 卡片统一圆角描边 */
+
+/* 卡片统一圆角描边 + 暖影 */
 .el-card,
 .el-card.is-never-shadow {
-  border-radius: 14px;
-  border-color: #e3eee7;
+  border-radius: 16px;
+  border-color: #e6dfd1;
+}
+.el-card {
+  box-shadow: 0 2px 10px rgba(58, 46, 24, 0.05);
 }
 
 /* 悬浮抬升（给关键卡片加 hover-lift 类即可） */
@@ -137,17 +203,12 @@ body {
 }
 .hover-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 26px rgba(45, 106, 79, 0.14);
+  box-shadow: 0 14px 28px rgba(58, 42, 20, 0.16);
 }
 
 /* 弹窗标题更醒目 */
 .el-dialog__title {
   font-size: 20px;
   font-weight: 700;
-  color: #22352b;
-}
-
-/* 适老化微调：页面副标题行距 */
-.text-secondary {
-  line-height: 1.7;
+  color: #26463a;
 }
