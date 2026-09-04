@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560">
+  <defs>
+    <linearGradient id="lawn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9f4e2"/>
+      <stop offset="1" stop-color="#cfe6c4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="560" fill="#f2f7ee"/>
+  <rect x="20" y="20" width="960" height="520" rx="18" fill="#eef6ea" stroke="#8fbf84" stroke-width="2"/>
+  <text x="60" y="58" font-size="24" font-weight="bold" fill="#2d6a4f" font-family="Microsoft YaHei,sans-serif">森林氧吧 · 园区导览图</text>
+
+  <!-- 主路 -->
+  <path d="M -10 300 Q 200 290 420 305 T 900 285 T 1030 290" stroke="#fff" stroke-width="30" fill="none" opacity="0.9"/>
+  <path d="M -10 300 Q 200 290 420 305 T 900 285 T 1030 290" stroke="#d7c89a" stroke-width="3" fill="none" stroke-dasharray="12 8"/>
+
+  <!-- 湖泊 -->
+  <ellipse cx="760" cy="420" rx="150" ry="80" fill="#aedce4"/>
+  <text x="760" y="430" font-size="18" fill="#2a6b78" text-anchor="middle" font-family="Microsoft YaHei,sans-serif">静心湖</text>
+
+  <!-- 设施图块 -->
+  <g font-family="Microsoft YaHei,sans-serif">
+    <g>
+      <rect x="80" y="120" width="150" height="90" rx="10" fill="#fff" stroke="#2d6a4f" stroke-width="2"/>
+      <text x="155" y="160" font-size="16" fill="#2d6a4f" text-anchor="middle" font-weight="bold">游客服务中心</text>
+      <text x="155" y="185" font-size="13" fill="#7a8a83" text-anchor="middle">主入口 · 注册登记</text>
+    </g>
+    <g>
+      <rect x="400" y="90" width="150" height="90" rx="10" fill="#fff" stroke="#2d6a4f" stroke-width="2"/>
+      <text x="475" y="130" font-size="16" fill="#2d6a4f" text-anchor="middle" font-weight="bold">养生馆</text>
+      <text x="475" y="155" font-size="13" fill="#7a8a83" text-anchor="middle">艾灸理疗 · 足浴SPA</text>
+    </g>
+    <g>
+      <rect x="620" y="60" width="160" height="80" rx="10" fill="#fff" stroke="#e9a23b" stroke-width="2"/>
+      <text x="700" y="95" font-size="15" fill="#a97417" text-anchor="middle" font-weight="bold">食疗餐厅</text>
+      <text x="700" y="118" font-size="13" fill="#7a8a83" text-anchor="middle">药膳 · 养生茶饮</text>
+    </g>
+    <g>
+      <rect x="80" y="390" width="150" height="80" rx="10" fill="#fff" stroke="#2d6a4f" stroke-width="2"/>
+      <text x="155" y="425" font-size="16" fill="#2d6a4f" text-anchor="middle" font-weight="bold">晨练草坪</text>
+      <text x="155" y="450" font-size="13" fill="#7a8a83" text-anchor="middle">太极 · 八段锦</text>
+    </g>
+    <g>
+      <rect x="350" y="400" width="150" height="90" rx="10" fill="#fff" stroke="#2d6a4f" stroke-width="2"/>
+      <text x="425" y="440" font-size="16" fill="#2d6a4f" text-anchor="middle" font-weight="bold">四季花圃</text>
+      <text x="425" y="465" font-size="13" fill="#7a8a83" text-anchor="middle">园艺疗法</text>
+    </g>
+    <g>
+      <rect x="560" y="240" width="150" height="80" rx="10" fill="#fff" stroke="#7fb89e" stroke-width="2"/>
+      <text x="635" y="275" font-size="15" fill="#2d6a4f" text-anchor="middle" font-weight="bold">竹林冥想亭</text>
+      <text x="635" y="298" font-size="13" fill="#7a8a83" text-anchor="middle">正念 · 冥想</text>
+    </g>
+  </g>
+
+  <!-- 湖畔步道 -->
+  <path d="M 640 470 Q 760 540 880 480" stroke="#6b9e8a" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="2 10"/>
+  <text x="800" y="545" font-size="15" fill="#2d6a4f" font-family="Microsoft YaHei,sans-serif">湖畔步道 · 森林浴</text>
+
+  <!-- 竹林/松林 -->
+  <g fill="#4c8a44" opacity="0.85">
+    <circle cx="920" cy="120" r="46"/><circle cx="970" cy="160" r="40"/>
+  </g>
+  <text x="945" y="105" font-size="15" fill="#2d6a4f" font-family="Microsoft YaHei,sans-serif">松林广场</text>
+  <text x="320" y="250" font-size="15" fill="#2d6a4f" font-family="Microsoft YaHei,sans-serif">南 门</text>
+  <text x="30" y="300" font-size="15" fill="#2d6a4f" font-family="Microsoft YaHei,sans-serif">西 门</text>
+
+  <!-- 指北针 -->
+  <g transform="translate(930 480)">
+    <circle r="20" fill="#fff" stroke="#2d6a4f" stroke-width="2"/>
+    <polygon points="0,-14 -6,6 0,1 6,6" fill="#e4572e"/>
+    <polygon points="0,14 -6,-6 0,-1 6,-6" fill="#7a8a83"/>
+  </g>
+  <text x="160" y="300" font-size="14" fill="#e4572e" font-family="Microsoft YaHei,sans-serif" text-anchor="middle">★ 您现在的位置</text>
+</svg>

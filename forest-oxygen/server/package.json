@@ -1,0 +1,20 @@
+{
+  "name": "forest-oxygen-server",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "森林氧吧·AI智慧康养系统 —— 后端服务（默认 MySQL 存储 forest_oxygen，可选 JSON 文件存储）",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "selfcheck": "node scripts/selfcheck.js",
+    "db:seed": "node scripts/gen-mysql-seed.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.24.3"
+  }
+}
