@@ -25,6 +25,11 @@
       <EnvBoard />
     </el-card>
 
+    <!-- B2. 四张统计卡：紧随实时监测正下方，整组与上方环境排同宽居中 -->
+    <div class="dash-row stat-band">
+      <StatCards layout="vertical" :stats="statTiles" />
+    </div>
+
     <!-- C. 图表行：近 14 天趋势 + 预约构成 -->
     <el-row :gutter="20" class="dash-row">
       <el-col :xs="24" :lg="14">
@@ -69,6 +74,35 @@
       </el-col>
     </el-row>
 
+    <!-- C2. 图表行二：我的项目分布（玫瑰）+ 我的康养参与度（雷达），均真实数据 -->
+    <el-row :gutter="20" class="dash-row">
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="never" class="block-card chart-card">
+          <template #header>
+            <div class="card-head">
+              <span class="head-title"><el-icon><Medal /></el-icon> 我的项目分布</span>
+              <span class="text-secondary">按已完成服务次数</span>
+            </div>
+          </template>
+          <el-empty v-if="!loading && !hasRose" description="体验更多康养项目后，这里会呈现您的项目分布" :image-size="90" />
+          <BaseChart v-if="!loading && hasRose" :option="roseOption" height="250" />
+        </el-card>
+      </el-col>
+
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="never" class="block-card chart-card">
+          <template #header>
+            <div class="card-head">
+              <span class="head-title"><el-icon><DataAnalysis /></el-icon> 我的康养参与度</span>
+              <span class="text-secondary">由服务与预约记录得出 · 非临床指标</span>
+            </div>
+          </template>
+          <el-empty v-if="!loading && !hasRadar" description="暂无参与记录，先到「项目总览」体验园区项目吧" :image-size="90" />
+          <BaseChart v-if="!loading && hasRadar" :option="radarOption" height="250" />
+        </el-card>
+      </el-col>
+    </el-row>
+
     <!-- D. 近期安排（整宽） -->
     <el-card shadow="never" class="block-card dash-row">
       <template #header>
@@ -95,11 +129,6 @@
         </div>
       </div>
     </el-card>
-
-    <!-- E. 四张长条统计卡（与园区环境交换后下沉到原环境卡所在区域） -->
-    <div class="dash-row">
-      <StatCards layout="vertical" :stats="statTiles" />
-    </div>
   </div>
 </template>
 
@@ -108,7 +137,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   Calendar, CircleCheck, Clock, DataAnalysis, LocationInformation,
-  PieChart, Tickets, TrendCharts, UserFilled
+  Medal, PieChart, Tickets, TrendCharts, UserFilled
 } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
@@ -258,6 +287,121 @@ const donutOption = computed(() => {
   }
 })
 
+/* ---------- 我的项目分布（玫瑰：真实 myHistory 按已完成项目聚合） ---------- */
+// 单绿系按相对量值浅→深映射（值越大色越深），仅靠同色深浅 + 直标 + tooltip 传达身份
+function roseColor(v) {
+  if (v > 0.8) return '#1f5c42'
+  if (v > 0.6) return '#2b7a56'
+  if (v > 0.4) return '#4f9a75'
+  if (v > 0.25) return '#85bd9d'
+  if (v > 0.12) return '#c3decb'
+  return '#e5efe6'
+}
+const roseData = computed(() => {
+  const m = {}
+  history.value.forEach(h => {
+    if (h.status !== 'done' || !h.projectName) return
+    m[h.projectName] = (m[h.projectName] || 0) + 1
+  })
+  let rows = Object.entries(m)
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value)
+  if (rows.length > 6) {
+    const top = rows.slice(0, 6)
+    const rest = rows.slice(6).reduce((s, r) => s + r.value, 0)
+    top.push({ name: '其他项目', value: rest })
+    rows = top
+  }
+  return rows
+})
+const hasRose = computed(() => roseData.value.length >= 2)
+const roseOption = computed(() => {
+  if (!hasRose.value) return null
+  const max = Math.max(...roseData.value.map(d => d.value))
+  return {
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: '#fff',
+      borderColor: '#e6dfd1',
+      textStyle: { color: '#2e3b33' },
+      formatter: p => `${p.name}：${p.value} 次（${p.percent}%）`
+    },
+    series: [
+      {
+        type: 'pie',
+        roseType: 'radius',
+        radius: ['12%', '74%'],
+        center: ['50%', '52%'],
+        itemStyle: { borderColor: '#fff', borderWidth: 2 },
+        label: { show: true, formatter: '{b} {c}', color: '#5f7368', fontSize: 13 },
+        labelLine: { lineStyle: { color: '#c9bfa8' } },
+        emphasis: { scaleSize: 5 },
+        data: roseData.value.map(d => ({
+          name: d.name,
+          value: d.value,
+          itemStyle: { color: roseColor(d.value / max) }
+        }))
+      }
+    ]
+  }
+})
+
+/* ---------- 我的康养参与度（雷达：真实记录派生的 5 维 0–10） ---------- */
+const clamp01 = v => Math.max(0, Math.min(10, Math.round(v)))
+const radarScores = computed(() => {
+  const doneN = counts.value.myDone ?? 0
+  const cancN = history.value.filter(h => h.status === 'cancelled').length
+  const done14 = trend.value.reduce((s, p) => s + p.done, 0)
+  const proj = new Set()
+  const slots = new Set()
+  history.value.forEach(h => {
+    if (h.status !== 'done') return
+    if (h.projectName) proj.add(h.projectName)
+    if (h.slot != null) slots.add(h.slot)
+  })
+  return [
+    { name: '到访规律', value: clamp01(doneN + cancN > 0 ? (doneN / (doneN + cancN)) * 10 : 0) },
+    { name: '服务完成', value: clamp01((Math.min(done14, 8) / 8) * 10) },
+    { name: '项目广度', value: clamp01((Math.min(proj.size, 3) / 3) * 10) },
+    { name: '时段覆盖', value: clamp01((Math.min(slots.size, 4) / 4) * 10) },
+    { name: '近期活跃', value: clamp01((Math.min(counts.value.myUpcoming ?? 0, 4) / 4) * 10) }
+  ]
+})
+const hasRadar = computed(() => radarScores.value.some(a => a.value > 0))
+const radarOption = computed(() => {
+  if (!hasRadar.value) return null
+  return {
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: '#fff',
+      borderColor: '#e6dfd1',
+      textStyle: { color: '#2e3b33' }
+    },
+    radar: {
+      indicator: radarScores.value.map(a => ({ name: a.name, max: 10 })),
+      shape: 'circle',
+      center: ['50%', '54%'],
+      radius: '66%',
+      splitNumber: 4,
+      axisName: { color: '#5f7368', fontSize: 13 },
+      splitArea: { areaStyle: { color: ['rgba(212, 230, 218, 0.2)', 'rgba(212, 230, 218, 0.06)'] } },
+      splitLine: { lineStyle: { color: '#d8cfbd' } },
+      axisLine: { lineStyle: { color: '#d8cfbd' } }
+    },
+    series: [
+      {
+        type: 'radar',
+        symbol: 'circle',
+        symbolSize: 5,
+        lineStyle: { width: 2, color: '#2b6349' },
+        itemStyle: { color: '#2b6349' },
+        areaStyle: { color: 'rgba(43, 99, 73, 0.26)' },
+        data: [{ value: radarScores.value.map(a => a.value), name: '参与度' }]
+      }
+    ]
+  }
+})
+
 /* ---------- 近期安排（真实预约行） ---------- */
 const upcomingRows = computed(() => {
   const out = []
@@ -388,6 +532,11 @@ onMounted(async () => {
 /* ===== 区块间距 / 卡片 ===== */
 .dash-row {
   margin-top: 18px;
+}
+/* 四张统计卡：整组收窄并与上方实时监测排（EnvBoard 上限 1500px）同宽居中 */
+.stat-band {
+  max-width: 1500px;
+  margin-inline: auto;
 }
 .block-card {
   border-radius: 16px;

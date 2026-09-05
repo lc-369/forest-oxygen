@@ -1,6 +1,6 @@
 <template>
   <!-- 竖向整卡（客户数据看板样板：整块上色长条卡） -->
-  <el-row v-if="layout === 'vertical'" :gutter="20" class="stat-row">
+  <el-row v-if="layout === 'vertical'" :gutter="28" class="stat-row">
     <el-col v-for="s in stats" :key="s.label" :xs="12" :sm="12" :md="6">
       <div class="stat-tile" :style="tileVars(s)">
         <span class="tile-deco"></span>
@@ -103,7 +103,7 @@ function tileVars(s) {
 
 <style scoped>
 .stat-row {
-  row-gap: 16px;
+  row-gap: 50px;
 }
 
 /* ===== 竖向整卡（vertical）===== */

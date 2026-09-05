@@ -16,7 +16,11 @@ const el = ref(null)
 let chart = null
 let ro = null
 
-const px = v => (typeof v === 'number' ? v + 'px' : v)
+// height 允许 Number 或 “250” 这类纯数字字符串：统一补 px，避免 CSS 高度无单位被忽略导致画布高为 0
+const px = v => {
+  const n = typeof v === 'number' ? v : /^\d+(\.\d+)?$/.test(String(v)) ? Number(v) : NaN
+  return Number.isFinite(n) ? n + 'px' : v
+}
 
 function render() {
   if (!chart) return
